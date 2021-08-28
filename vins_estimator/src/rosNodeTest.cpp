@@ -15,6 +15,8 @@
 #include <thread>
 #include <mutex>
 #include <ros/ros.h>
+#include "rclcpp/rclcpp.hpp"
+
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include "estimator/estimator.h"
@@ -223,7 +225,9 @@ void cam_switch_callback(const std_msgs::BoolConstPtr &switch_msg)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "vins_estimator");
+    //ros::init(argc, argv, "vins_estimator");
+    rclcpp::init(argc, argv);
+
     ros::NodeHandle n("~");
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
 
@@ -242,10 +246,11 @@ int main(int argc, char **argv)
     estimator.setParameter();
 
 #ifdef EIGEN_DONT_PARALLELIZE
-    ROS_DEBUG("EIGEN_DONT_PARALLELIZE");
+    RCLCPP_DEBUG("EIGEN_DONT_PARALLELIZE");
 #endif
 
-    ROS_WARN("waiting for image and imu...");
+    // ROS_WARN("waiting for image and imu...");
+    RCLCPP_WARN("waiting for image and imu...")
 
     registerPub(n);
 
